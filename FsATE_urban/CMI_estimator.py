@@ -412,7 +412,7 @@ class CMI_estimator():
         Returns
         -------
         value : array-like
-            array with the first column (Xt) shuffled.
+            array with the first column (Xt) shuffled while preserving the association between (Yt, Zt).
         
         """
         array = self.array
