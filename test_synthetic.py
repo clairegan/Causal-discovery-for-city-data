@@ -149,15 +149,6 @@ for nn in range(len(N_list)):
                     y_pred = model.params[0]  + model.params[1]*x[:,0] + model.params[2]*x[:,1]
                     residuals = y-y_pred
                     return residuals    
-                
-                
-
-                # for t in range(T):
-                #     XI_X[:, t] = get_SAMI(PerCapita_X.T[:, t]*n) 
-                #     XI_Y[:, t] = get_SAMI(PerCapita_Y.T[:, t]*n) 
-                    # FAMI_X[:, t] = get_FAMI(PerCapita_X.T[:, t]*n) 
-                    # FAMI_Y[:, t] = get_FAMI(PerCapita_Y.T[:, t]*n) 
-
                 # array of FAMIs
                 array_FAMI = np.zeros((N,2,T),dtype=float)
                 array_FAMI[:,0,:] = ZETA_X.T
@@ -167,40 +158,27 @@ for nn in range(len(N_list)):
                 array_PerCapita = np.zeros((N, 2, T), dtype=float)
                 array_PerCapita[:,0,:] = PerCapita_X.T
                 array_PerCapita[:,1,:] = PerCapita_Y.T
-                # print(XI_X)
-                # array of SAMIs
-                # array_SAMI = np.zeros((N,2,T),dtype=float)
-                # array_SAMI[:,0,:] = XI_X
-                # array_SAMI[:,1,:] = XI_Y
 
                 var_names = ['$X$', '$Y$']
 
                 # #########################
                 significance = 0.05
-                tau_max = 1
+                tau_max = 1 # time history
                 tau_min = 1
 
-                sig_samples = 1000; shuffle_neighbors = 15; knn = 5
+                sig_samples = 1000
                 array = array_FAMI
                 # print('array_FAMI', var_names, array.shape)
 
                 cmi = CMI_estimator(array=array, sig_samples=sig_samples, symbs=5)
                 for i in range(array.shape[1]):
                     for j in range(array.shape[1]):
-                        # for k in range(array.shape[1]):
-                            # if array.shape[1]<3 and i!=j:
                         if i!=j:    
-                            # X = [(i, -1)]; 
                             Y = [(j, 0)]
-                            
-                            optimal_tau,_ =  cmi.optimal_tau(array=array, j=j, tau_max=tau_max)
-                            # optimal_tau = tau_max
-                            Z  = [(j, -t) for t in range(1, optimal_tau+1)]
-                            # Z.append((k, -optimal_tau))
-                            # X = [(i, -optimal_tau)]; 
-                            X = [(i, -optimal_tau)]; 
-                            # for Z  in [[(j, -t) for t in range(1, tau+1)] for tau in range(1, tau_m   ax+1)]:
-                            # print('{}->{} with {} lags'.format(var_names[i], var_names[j],str(optimal_tau),))
+                            # optimal_tau,_ =  cmi.optimal_tau(array=array, j=j, tau_max=tau_max)
+                            Z  = [(j, -t) for t in range(1, tau_max+1)]
+                            X = [(i, -tau_max)]; 
+
                             val = cmi.cmi_symb(array, X = X, Y = Y, Z = Z)
                             pval = cmi.symb_parallel_shuffles_significance(X, Y, Z, value = val)
 
