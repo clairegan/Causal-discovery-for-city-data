@@ -29,8 +29,8 @@ def adf_detrend(data):
 
 ################### CO2 emission ################### 
 
-FsAMIs_CO2 = np.load('./Results/FAMIs_CO2_commute.npy')
-FsAMIs_TEMP = np.load('./Results/FAMIs_TEMP_commute.npy')
+FsAMIs_CO2 = np.load('./Results/FAMIs_CO2.npy')
+FsAMIs_TEMP = np.load('./Results/FAMIs_TEMP.npy')
 
 N,T = FsAMIs_TEMP.shape
 print(N,T)
@@ -49,8 +49,8 @@ var_names = ['$CO2$', '$TEMP$']
 
 #########################
 significance = 0.05
-tau_max = 4
-tau_lag = 1
+tau_max = 4 # time history
+tau_lag = 1 # time lag
 sig_samples = 10000; symbs = 4
 
 array = array_FsAMI
