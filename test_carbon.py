@@ -29,8 +29,8 @@ def adf_detrend(data):
 
 ################### CO2 emission ################### 
 
-FsAMIs_CO2 = np.load('./Results/FAMIs_CO2.npy')
-FsAMIs_TEMP = np.load('./Results/FAMIs_TEMP.npy')
+FsAMIs_CO2 = np.load('./Scaling_Results/FAMIs_CO2.npy')
+FsAMIs_TEMP = np.load('./Scaling_Results/FAMIs_TEMP.npy')
 
 N,T = FsAMIs_TEMP.shape
 print(N,T)
@@ -65,11 +65,11 @@ for i in range(array.shape[1]):
             X = [(i, -tau_lag)]; 
             print('{}->{} with {} history'.format(var_names[i], var_names[j],str(tau_max),))
 
-            val = cmi.cmi_symb(array, X = X, Y = Y, Z = Z)
-            print('cmi_symb_val: ',val)
+            val = cmi.cmi_symb(array, X = X, Y = Y, Z = Z) # using FsATE
+            print('FsATE_val: ',val)
 
             pval = cmi.symb_parallel_shuffles_significance(X, Y, Z, value = val)
-            print('cmi_symb_pval: ', pval)
+            print('FsATE_pval: ', pval)
 
             P_corr, P_value = cmi.get_analytic_significance(array, X, Y, Z)
 

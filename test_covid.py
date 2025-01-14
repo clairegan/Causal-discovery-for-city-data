@@ -32,9 +32,9 @@ def adf_detrend(data):
 
 # ############# COVID #################
 
-FAMIs_covid_weekly = np.load('./Results/FAMIs_covid_weekly.npy')
-FAMIs_death_weekly = np.load('./Results/FAMIs_death_weekly.npy')
-FAMIs_fullvaccine_weekly = np.load('./Results/FAMIs_fullvaccine_weekly.npy')
+FAMIs_covid_weekly = np.load('./Scaling_Results/FAMIs_covid_weekly.npy')
+FAMIs_death_weekly = np.load('./Scaling_Results/FAMIs_death_weekly.npy')
+FAMIs_fullvaccine_weekly = np.load('./Scaling_Results/FAMIs_fullvaccine_weekly.npy')
 
 
 
@@ -76,12 +76,11 @@ for i in range(array.shape[1]):
 
             X = [(i, -tau_lag)]; 
             print('{}->{}|{} with {} lags {} history'.format(var_names[i], var_names[j], var_names[k],str(tau_lag),str(tau_max)))
-            val = cmi.cmi_symb(array, X = X, Y = Y, Z = Z)
-            # # val = cmi_estimator.independence_measure(array, X = X, Y = Y, Z = Z)
-            print('cmi_symb_val: ',val)
+            val = cmi.cmi_symb(array, X = X, Y = Y, Z = Z) # using FsACTE
+            print('FsACTE_val: ',val)
 
             pval = cmi.symb_subset_parallel_shuffles_significance(X, Y, Z, value = val)
-            print('cmi_symb_pval: ', pval)
+            print('FsACTE_pval: ', pval)
             P_corr, P_value = cmi.get_analytic_significance(array, X, Y, Z)
             print('partial_corr_val: ',P_corr,) 
             print('partial_corr_pval: ',P_value)
